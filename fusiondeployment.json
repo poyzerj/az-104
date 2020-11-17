@@ -1,28 +1,7 @@
 {
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
-    "contentVersion": "1.0.0.2",
-    "parameters": {
-        "virtualMachines_backendSERVER_name": {
-            "defaultValue": "backendSERVER",
-            "type": "String"
-        },
-        "virtualNetworks_BeardSite_vnet_name": {
-            "defaultValue": "BeardSite-vnet",
-            "type": "String"
-        },
-        "networkInterfaces_backendserver889_name": {
-            "defaultValue": "backendserver889",
-            "type": "String"
-        },
-        "publicIPAddresses_backendSERVER_ip_name": {
-            "defaultValue": "backendSERVER-ip",
-            "type": "String"
-        },
-        "networkSecurityGroups_backendSERVER_nsg_name": {
-            "defaultValue": "backendSERVER-nsg",
-            "type": "String"
-        }
-    },
+    "contentVersion": "1.0.0.3",
+
     "variables": {
         "ServerName": "Fusion-DC",
         "VnetName": "Fusion-Vnet",
@@ -37,7 +16,7 @@
             "name": "[variables('NetworkSecurityGroupName:')]",
             "location": "[resourceGroup().location]",
             "tags": {
-                "BeardSite": "[resourceGroup().location]"
+                "Fusion": "[resourceGroup().location]"
             },
             "properties": {
                 "securityRules": [
@@ -156,7 +135,7 @@
                         "createOption": "FromImage",
                         "caching": "ReadWrite",
                         "managedDisk": {
-                            "storageAccountType": "Standard_LRS"
+                            "storageAccountType": "Standard_DS1_v2"
                         },
                         "diskSizeGB": 127
                     },
