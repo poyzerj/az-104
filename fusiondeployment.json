@@ -93,7 +93,7 @@
                 },
                 "subnets": [
                     {
-                        "name": "default",
+                        "name": "static",
                         "properties": {
                             "addressPrefix": "192.168.1.0.0/24",
                             "delegations": [],
@@ -199,7 +199,7 @@
                                 "id": "[resourceId('Microsoft.Network/publicIPAddresses', variables('PublicIPName'))]"
                             },
                             "subnet": {
-                                "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('VnetName'), 'default')]"
+                                "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('VnetName'), 'static')]"
                             },
                             "primary": true,
                             "privateIPAddressVersion": "IPv4"
