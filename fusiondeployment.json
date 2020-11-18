@@ -1,6 +1,6 @@
 {
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
-    "contentVersion": "1.0.0.5",
+    "contentVersion": "1.0.0.4",
 
     "variables": {
         "ServerName": "Fusion-DC",
@@ -70,9 +70,9 @@
                 "tier": "Regional"
             },
             "properties": {
-                "ipAddress": "192.168.1.2",
+                "ipAddress": "",
                 "publicIPAddressVersion": "IPv4",
-                "publicIPAllocationMethod": "Static",
+                "publicIPAllocationMethod": "Dynamic",
                 "idleTimeoutInMinutes": 4,
                 "ipTags": []
             }
@@ -83,7 +83,7 @@
             "name": "[variables('VnetName')]",
             "location": "[resourceGroup().location]",
             "tags": {
-                "Fusion": "[resourceGroup().location]"
+                "BeardSite": "[resourceGroup().location]"
             },
             "properties": {
                 "addressSpace": {
@@ -95,7 +95,7 @@
                     {
                         "name": "Class C",
                         "properties": {
-                            "addressPrefix": "192.168.1.0/24",
+                            "addressPrefix": "192.168.1.0.0/24",
                             "delegations": [],
                             "privateEndpointNetworkPolicies": "Enabled",
                             "privateLinkServiceNetworkPolicies": "Enabled"
@@ -174,8 +174,48 @@
                 "privateEndpointNetworkPolicies": "Enabled",
                 "privateLinkServiceNetworkPolicies": "Enabled"
             }
+        },
+        {
+            "type": "Microsoft.Network/networkInterfaces",
+            "apiVersion": "2019-07-01",
+            "name": "[variables('nicname')]",
+            "location": "[resourceGroup().location]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/publicIPAddresses', variables('PublicIPName'))]",
+                "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('VnetName'), 'default')]",
+                "[resourceId('Microsoft.Network/networkSecurityGroups', variables('NetworkSecurityGroupName:'))]"
+            ],
+            "tags": {
+                "BeardSite": "[resourceGroup().location]"
+            },
+            "properties": {
+                "ipConfigurations": [
+                    {
+                        "name": "ipconfig1",
+                        "properties": {
+                            "privateIPAddress": "192.168.1.2",
+                            "privateIPAllocationMethod": "Static",
+                            "publicIPAddress": {
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', variables('PublicIPName'))]"
+                            },
+                            "subnet": {
+                                "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('VnetName'), 'default')]"
+                            },
+                            "primary": true,
+                            "privateIPAddressVersion": "IPv4"
+                        }
+                    }
+                ],
+                "dnsSettings": {
+                    "dnsServers": []
+                },
+                "enableAcceleratedNetworking": false,
+                "enableIPForwarding": false,
+                "networkSecurityGroup": {
+                    "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('NetworkSecurityGroupName:'))]"
+                }
+            }
         }
-        
         
     ]
 }
