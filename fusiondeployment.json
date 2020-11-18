@@ -93,7 +93,7 @@
                 },
                 "subnets": [
                     {
-                        "name": "Class C",
+                        "name": "ClassC",
                         "properties": {
                             "addressPrefix": "192.168.1.0.0/24",
                             "delegations": [],
