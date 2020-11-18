@@ -1,6 +1,6 @@
 {
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
-    "contentVersion": "1.0.0.4",
+    "contentVersion": "1.0.0.5",
 
     "variables": {
         "ServerName": "Fusion-DC",
@@ -70,9 +70,9 @@
                 "tier": "Regional"
             },
             "properties": {
-                "ipAddress": "",
+                "ipAddress": "192.168.1.2",
                 "publicIPAddressVersion": "IPv4",
-                "publicIPAllocationMethod": "Dynamic",
+                "publicIPAllocationMethod": "Static",
                 "idleTimeoutInMinutes": 4,
                 "ipTags": []
             }
@@ -83,19 +83,19 @@
             "name": "[variables('VnetName')]",
             "location": "[resourceGroup().location]",
             "tags": {
-                "BeardSite": "[resourceGroup().location]"
+                "Fusion": "[resourceGroup().location]"
             },
             "properties": {
                 "addressSpace": {
                     "addressPrefixes": [
-                        "10.0.4.0/24"
+                        "192.168.1.0/24"
                     ]
                 },
                 "subnets": [
                     {
-                        "name": "default",
+                        "name": "Class C",
                         "properties": {
-                            "addressPrefix": "10.0.4.0/24",
+                            "addressPrefix": "192.168.1.0/24",
                             "delegations": [],
                             "privateEndpointNetworkPolicies": "Enabled",
                             "privateLinkServiceNetworkPolicies": "Enabled"
@@ -169,53 +169,13 @@
                 "[resourceId('Microsoft.Network/virtualNetworks', variables('VnetName'))]"
             ],
             "properties": {
-                "addressPrefix": "10.0.4.0/24",
+                "addressPrefix": "192.168.1.0/24",
                 "delegations": [],
                 "privateEndpointNetworkPolicies": "Enabled",
                 "privateLinkServiceNetworkPolicies": "Enabled"
             }
-        },
-        {
-            "type": "Microsoft.Network/networkInterfaces",
-            "apiVersion": "2019-07-01",
-            "name": "[variables('nicname')]",
-            "location": "[resourceGroup().location]",
-            "dependsOn": [
-                "[resourceId('Microsoft.Network/publicIPAddresses', variables('PublicIPName'))]",
-                "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('VnetName'), 'default')]",
-                "[resourceId('Microsoft.Network/networkSecurityGroups', variables('NetworkSecurityGroupName:'))]"
-            ],
-            "tags": {
-                "BeardSite": "[resourceGroup().location]"
-            },
-            "properties": {
-                "ipConfigurations": [
-                    {
-                        "name": "ipconfig1",
-                        "properties": {
-                            "privateIPAddress": "10.0.4.4",
-                            "privateIPAllocationMethod": "Dynamic",
-                            "publicIPAddress": {
-                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', variables('PublicIPName'))]"
-                            },
-                            "subnet": {
-                                "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('VnetName'), 'default')]"
-                            },
-                            "primary": true,
-                            "privateIPAddressVersion": "IPv4"
-                        }
-                    }
-                ],
-                "dnsSettings": {
-                    "dnsServers": []
-                },
-                "enableAcceleratedNetworking": false,
-                "enableIPForwarding": false,
-                "networkSecurityGroup": {
-                    "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('NetworkSecurityGroupName:'))]"
-                }
-            }
         }
+        
         
     ]
 }
