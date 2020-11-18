@@ -193,7 +193,7 @@
                     {
                         "name": "ipconfig1",
                         "properties": {
-                            "privateIPAddress": "192.168.1.2",
+                            "privateIPAddress": "192.168.1.4",
                             "privateIPAllocationMethod": "static",
                             "publicIPAddress": {
                                 "id": "[resourceId('Microsoft.Network/publicIPAddresses', variables('PublicIPName'))]"
