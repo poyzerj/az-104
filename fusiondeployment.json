@@ -135,7 +135,7 @@
                         "createOption": "FromImage",
                         "caching": "ReadWrite",
                         "managedDisk": {
-                            "storageAccountType": "Standard_DS1"
+                            "storageAccountType": "Standard_B1s"
                         },
                         "diskSizeGB": 127
                     },
