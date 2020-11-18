@@ -164,7 +164,7 @@
         {
             "type": "Microsoft.Network/virtualNetworks/subnets",
             "apiVersion": "2019-07-01",
-            "name": "[concat(variables('VnetName'), '/default')]",
+            "name": "[concat(variables('VnetName'), '/static')]",
             "dependsOn": [
                 "[resourceId('Microsoft.Network/virtualNetworks', variables('VnetName'))]"
             ],
@@ -182,7 +182,7 @@
             "location": "[resourceGroup().location]",
             "dependsOn": [
                 "[resourceId('Microsoft.Network/publicIPAddresses', variables('PublicIPName'))]",
-                "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('VnetName'), 'default')]",
+                "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('VnetName'), 'static')]",
                 "[resourceId('Microsoft.Network/networkSecurityGroups', variables('NetworkSecurityGroupName:'))]"
             ],
             "tags": {
